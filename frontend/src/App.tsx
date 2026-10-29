@@ -213,6 +213,9 @@ export function App() {
 
   useGSAP(
     () => {
+      const targets = gsap.utils.toArray('.gsap-section-fade');
+      if (targets.length === 0) return;
+
       const mm = gsap.matchMedia();
       mm.add(
         {
@@ -222,7 +225,7 @@ export function App() {
         (context) => {
           const { reduce } = context.conditions || {};
           gsap.fromTo(
-            '.gsap-section-fade',
+            targets,
             { autoAlpha: 0, y: 12 },
             {
               autoAlpha: 1,
@@ -236,7 +239,7 @@ export function App() {
       );
       return () => mm.revert();
     },
-    { scope: mainRef, dependencies: [selectedPersonaId, activeTab, planSubView] }
+    { scope: mainRef, dependencies: [selectedPersonaId, activeTab, planSubView, Boolean(activePlan)] }
   );
 
   return (

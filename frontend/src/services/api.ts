@@ -6,7 +6,14 @@ import {
   IRagQueryResponse,
 } from '../types/api.types';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+function resolveApiBase(): string {
+  const raw = (import.meta.env.VITE_API_BASE_URL || '').trim().replace(/\/+$/, '');
+  if (!raw) return '/api/v1';
+  if (raw.endsWith('/api/v1')) return raw;
+  return `${raw}/api/v1`;
+}
+
+const API_BASE = resolveApiBase();
 
 class ApiService {
   private token: string | null = null;

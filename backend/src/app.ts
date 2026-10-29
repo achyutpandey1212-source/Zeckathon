@@ -50,6 +50,16 @@ export function createApp() {
   app.use('/api/v1/guardrails', guardrailsRouter);
   app.use('/api/v1/audit', auditRouter);
 
+  // Also mount root aliases in case VITE_API_BASE_URL is configured without `/api/v1`
+  app.use('/health', healthRouter);
+  app.use('/auth', authRouter);
+  app.use('/personas', personasRouter);
+  app.use('/plans', plansRouter);
+  app.use('/funds', fundsRouter);
+  app.use('/rag', ragRouter);
+  app.use('/guardrails', guardrailsRouter);
+  app.use('/audit', auditRouter);
+
   app.get('/', (_req, res) => {
     res.json({
       name: 'ArthaGuard AI — SEBI-Registered Investment Adviser Co-Pilot API',

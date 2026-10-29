@@ -1,9 +1,31 @@
 import dotenv from 'dotenv';
+import fs from 'fs';
 import path from 'path';
 
-// Load from backend/.env first, fallback to root/.env
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
-dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
+// Load both root .env and backend/.env, letting non-placeholder values win
+const rootEnvPath = path.resolve(process.cwd(), '../.env');
+const localEnvPath = path.resolve(process.cwd(), '.env');
+
+if (fs.existsSync(localEnvPath)) {
+  dotenv.config({ path: localEnvPath });
+}
+if (fs.existsSync(rootEnvPath)) {
+  const parsedRoot = dotenv.parse(fs.readFileSync(rootEnvPath));
+  for (const [key, val] of Object.entries(parsedRoot)) {
+    const current = process.env[key] || '';
+    const isCurrentPlaceholder =
+      !current ||
+      current.includes('<username>') ||
+      current.includes('<password>') ||
+      current.includes('your_') ||
+      current.includes('cluster0.example');
+    if (isCurrentPlaceholder && val) {
+      process.env[key] = val;
+    } else if (key === 'GEMINI_PRIMARY_MODEL' && val) {
+      process.env[key] = val;
+    }
+  }
+}
 
 export const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
