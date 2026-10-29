@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background-color: #faf9f5;
+    color: #141413;
+    line-height: 1.62;
+  }
+
+  h1, h2, h3, h4, h5, h6, button, th, .font-heading {
+    font-family: 'Poppins', Arial, sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', Consolas, monospace;
+  }
+}
+
+/* Custom clean scrollbar for institutional workbench */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #faf9f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #b0aea5;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #141413;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+  }
+}
